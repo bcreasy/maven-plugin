@@ -668,6 +668,12 @@ public class MavenModuleSetBuild extends AbstractMavenBuild<MavenModuleSet,Maven
                             return r;
             			}
 
+                        for (Action action : getRootBuild().getActions()) {
+                            if(action instanceof EnvironmentContributingAction){
+                                ((EnvironmentContributingAction) action).buildEnvVars(MavenModuleSetBuild.this, envVars);
+                            }
+                        }
+
                         parsePoms(listener, logger, envVars, mvn, mavenVersion, mavenBuildInformation); // #5428 : do pre-build *before* parsing pom
                         SplittableBuildListener slistener = new SplittableBuildListener(listener);
                         proxies = new HashMap<ModuleName, ProxyImpl2>();
